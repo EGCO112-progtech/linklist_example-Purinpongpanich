@@ -119,8 +119,8 @@ void insert( LLPtr *sPtr, int value )
          previousPtr->nextPtr = newPtr;
         
          newPtr->nextPtr = currentPtr;
-        if(currentPtr != NULL)
-          currentPtr->prevPtr = newPtr; 
+         if(currentPtr != NULL)
+           currentPtr->prevPtr = newPtr; 
          
  
          
@@ -142,6 +142,8 @@ int deletes( LLPtr *sPtr, int value )
    if ( value == ( *sPtr )->data ) { 
       tempPtr = *sPtr; // hold onto node being removed
       *sPtr = ( *sPtr )->nextPtr; // de-thread the node
+      if(*sPtr)
+        ( *sPtr )->prevPtr = NULL; 
       free( tempPtr ); // free the de-threaded node
       return value;
    } // end if
@@ -158,7 +160,11 @@ int deletes( LLPtr *sPtr, int value )
       // delete node at currentPtr
       if ( currentPtr != NULL ) { 
          tempPtr = currentPtr;
-         previousPtr->nextPtr = currentPtr->nextPtr;
+         currentPtr = currentPtr->nextPtr;
+         previousPtr->nextPtr = currentPtr;
+         if(currentPtr){
+          currentPtr->prevPtr = previousPtr;
+         }
          free( tempPtr );
          return value;
       } // end if
