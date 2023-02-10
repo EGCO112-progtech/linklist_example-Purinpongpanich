@@ -39,6 +39,7 @@ int main( void )
             printf( "%s", "Enter a number: " );
             scanf( "%d", &item );
             insert( &startPtr, item ); // insert item in list
+            printList( startPtr );
             reverseList( startPtr );
             break;
          case 2: // delete an element
@@ -50,6 +51,7 @@ int main( void )
                // if character is found, remove it
                if ( deletes( &startPtr, item ) ) { // remove item
                   printf( "%d deleted.\n", item );
+                  printList( startPtr );
                   reverseList( startPtr );
                } // end if
                else {
