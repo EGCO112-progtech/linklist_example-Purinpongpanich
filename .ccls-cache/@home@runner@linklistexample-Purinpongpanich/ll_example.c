@@ -39,7 +39,7 @@ int main( void )
             printf( "%s", "Enter a number: " );
             scanf( "%d", &item );
             insert( &startPtr, item ); // insert item in list
-            printList( startPtr );
+            reverseList( startPtr );
             break;
          case 2: // delete an element
             // if list is not empty
@@ -50,7 +50,7 @@ int main( void )
                // if character is found, remove it
                if ( deletes( &startPtr, item ) ) { // remove item
                   printf( "%d deleted.\n", item );
-                  printList( startPtr );
+                  reverseList( startPtr );
                } // end if
                else {
                   printf( "%d not found.\n\n", item );
@@ -108,16 +108,20 @@ void insert( LLPtr *sPtr, int value )
 
       // insert new node at beginning of list
       if ( previousPtr == NULL ) { 
-         newPtr->nextPtr = *sPtr;
-      
+         newPtr->nextPtr = *sPtr; 
+         if(currentPtr != NULL)
+          currentPtr->prevPtr = newPtr; 
          *sPtr = newPtr;
         
       } // end if
       else { // insert new node between previousPtr and currentPtr
+         newPtr->prevPtr = previousPtr;
          previousPtr->nextPtr = newPtr;
-   
-          
+        
          newPtr->nextPtr = currentPtr;
+        if(currentPtr != NULL)
+          currentPtr->prevPtr = newPtr; 
+         
  
          
       } // end else
@@ -200,16 +204,15 @@ void reverseList( LLPtr currentPtr )
       puts( "List is empty.\n" );
    } // end if
    else { 
-      puts( "The reverse list is:" );
-      while(currentPtr != NULL){
+      puts( "The reverse list is :" );
+      while(currentPtr->nextPtr != NULL){
         currentPtr = currentPtr->nextPtr;
       }
       // while not the end of the list
-      while ( currentPtr->nextPtr!= NULL ) {
+      while ( currentPtr->prevPtr!= NULL ) {
          printf( "%d --> ", currentPtr->data );
          currentPtr = currentPtr->prevPtr;   
       } // end while
-
       printf( "%d --> NULL\n",currentPtr->data );
        
 
