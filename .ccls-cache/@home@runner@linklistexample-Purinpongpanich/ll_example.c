@@ -2,10 +2,12 @@
 // Inserting and deleting nodes in a list
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // self-referential structure                       
 struct Node {                                      
    int data; // each listNode contains a character 
+   char name[30];
    struct Node *nextPtr,*prevPtr; // pointer to next node
 }; // end structure listNode                        
 
@@ -16,7 +18,7 @@ typedef LLnode *LLPtr; // synonym for ListNode*
 
 int deletes( LLPtr *sPtr, int value );
 int isEmpty( LLPtr sPtr );
-void insert( LLPtr *sPtr, int value );
+void insert( LLPtr *sPtr, int value, char name[30] );
 void printList( LLPtr currentPtr );
 void reverseList( LLPtr currentPtr );
 void instructions( void );
@@ -26,7 +28,7 @@ int main( void )
    LLPtr startPtr = NULL; // initially there are no nodes
    unsigned int choice; // user's choice
    int item; // char entered by user
-
+   char input[30];
    instructions(); // display the menu
    printf( "%s", "? " );
    scanf( "%u", &choice );
@@ -38,7 +40,9 @@ int main( void )
          case 1:
             printf( "%s", "Enter a number: " );
             scanf( "%d", &item );
-            insert( &startPtr, item ); // insert item in list
+            printf( "%s", "Enter Name: " );
+            scanf( "%s", input );
+            insert( &startPtr, item, input); // insert item in list
             printList( startPtr );
             reverseList( startPtr );
             break;
@@ -86,7 +90,7 @@ void instructions( void )
 } // end function instructions
 
 // insert a new value into the list in sorted order
-void insert( LLPtr *sPtr, int value )
+void insert( LLPtr *sPtr, int value, char input[30] )
 { 
    LLPtr newPtr; // pointer to new node
    LLPtr previousPtr; // pointer to previous node in list
@@ -96,6 +100,7 @@ void insert( LLPtr *sPtr, int value )
 
    if ( newPtr != NULL ) { // is space available
       newPtr->data = value; // place value in node
+      strcpy(newPtr->name ,input);
       newPtr->nextPtr = NULL; // node does not link to another node
       newPtr->prevPtr= NULL;// node does not link to another node
        
@@ -196,8 +201,15 @@ void printList( LLPtr currentPtr )
          printf( "%d --> ", currentPtr->data );
          currentPtr = currentPtr->nextPtr;   
       } // end while
-
-      printf( "%d --> NULL\n",currentPtr->data );
+       printf( "%d --> NULL\n",currentPtr->data );
+      while(currentPtr->prevPtr != NULL){
+        currentPtr = currentPtr->prevPtr;
+      }
+      while ( currentPtr->nextPtr!= NULL ) {
+         printf( "%s --> ", currentPtr->name );
+         currentPtr = currentPtr->nextPtr;   
+      } // end while
+      printf( "%s --> NULL\n", currentPtr->name );
        
 
      
@@ -222,9 +234,18 @@ void reverseList( LLPtr currentPtr )
          currentPtr = currentPtr->prevPtr;   
       } // end while
       printf( "%d --> NULL\n",currentPtr->data );
+      while(currentPtr->nextPtr != NULL){
+        currentPtr = currentPtr->nextPtr;
+      }
+      while ( currentPtr->prevPtr!= NULL ) {
+         printf( "%s --> ", currentPtr->name);
+         currentPtr = currentPtr->prevPtr;   
+      } // end while
+      printf( "%s --> NULL\n", currentPtr->name );
        
 
      
        
    } // end else
 } // end function printList
+
