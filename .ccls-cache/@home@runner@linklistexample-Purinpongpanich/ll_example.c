@@ -22,6 +22,7 @@ void insert( LLPtr *sPtr, int value, char name[30] );
 void printList( LLPtr currentPtr );
 void reverseList( LLPtr currentPtr );
 void instructions( void );
+void release();
 
 int main( void )
 { 
@@ -67,6 +68,7 @@ int main( void )
             } // end else
 
             break;
+
          default:
             puts( "Invalid choice.\n" );
             instructions();
@@ -77,7 +79,8 @@ int main( void )
       scanf( "%u", &choice );
    } // end while
   /* Clear all nodes at the end of nodes*/
-   puts( "End of run." );
+   release( startPtr );
+   puts( "\nEnd of run." );
 } // end main
 
 // display program instructions to user
@@ -249,3 +252,13 @@ void reverseList( LLPtr currentPtr )
    } // end else
 } // end function printList
 
+//free Node function
+void release(LLPtr currentPtr){
+  LLPtr tmp;
+    while(currentPtr != NULL){
+      tmp = currentPtr;
+      printf("\ndeclaring %d",currentPtr->data);
+      currentPtr = currentPtr->nextPtr;
+      free(tmp);
+      }
+}//end free Node function
